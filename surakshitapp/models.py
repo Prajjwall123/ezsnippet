@@ -112,7 +112,7 @@ class Flood(models.Model):
     cause = models.CharField(max_length=100, choices=FLOOD_CAUSES, default='rainfall')
     is_active = models.BooleanField(default=True)
 
-
+    
 
 class Glof(models.Model):
     GLOF_CAUSES= [

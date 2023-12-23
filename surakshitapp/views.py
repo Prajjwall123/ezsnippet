@@ -1,9 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from .models import User
+from . import models
+from .models import Earthquake, Flood, Glof, Landslide, User
 
 
 # Create your views here.
@@ -59,6 +62,55 @@ def signup(request):
 
         myuser = User.objects.create_user(email=email, password=password, phone_number=phone_number, latitude=latitude, longitude=longitude, name=name)
 
-        return redirect('login')
+        return redirect('signin')
 
     return render(request, 'signup.html')
+
+def calculate_users_form(request):
+    # Fetch all active floods from the database
+    active_floods = Flood.objects.filter(is_active=True)
+
+    # Create a dictionary to represent the response
+    response_data = {'active_floods': []}
+
+    # Iterate through each active flood
+    for flood in active_floods:
+        # Fetch all users from the database
+        all_users = User.objects.all()
+
+        # Convert flood coordinates to floats
+        try:
+            flood_lat = float(flood.latitude_epicenter)
+            flood_lon = float(flood.longitude_epicenter)
+        except ValueError:
+            # Handle the case where the coordinates cannot be converted to float
+            continue
+
+        # Filter users within the radius of the flood using an if-else statement
+        users_within_radius = [
+            {
+                'user_email': user.email,
+                'latitude': user.latitude,
+                'longitude': user.longitude
+            }
+            for user in all_users
+            if (
+                user.latitude and user.longitude and  # Check for non-empty values
+                flood_lat - flood.radius <= float(user.latitude) <= flood_lat + flood.radius and
+                flood_lon - flood.radius <= float(user.longitude) <= flood_lon + flood.radius
+            )
+        ]
+
+        # Collect user information for the response
+        users_info = {
+            'epicenter_latitude': flood.latitude_epicenter,
+            'epicenter_longitude': flood.longitude_epicenter,
+            'radius': flood.radius,
+            'users_within_radius': users_within_radius
+        }
+
+        # Append the information to the response
+        response_data['active_floods'].append(users_info)
+
+    # Return the response as JSON
+    return JsonResponse(response_data)
