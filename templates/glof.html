@@ -1,1 +1,12 @@
 {% extends "index.html" %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section charts">
+        {% if chart %}
+            <img src="data:image/png;base64, {{ chart|safe }}">
+        {% endif %}
+        
+    </section>
+</main><!-- End #main -->
+{% endblock content %}

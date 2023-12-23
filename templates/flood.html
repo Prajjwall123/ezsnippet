@@ -1,1 +1,14 @@
 {% extends "index.html" %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section charts">
+        {% if pie %}
+            <img src="data:image/png;base64, {{ pie|safe }}">
+        {% endif %}
+        {% if flood_chart %}
+            <img src="data:image/png;base64, {{ flood_chart|safe }}">
+        {% endif %}
+    </section>
+</main><!-- End #main -->
+{% endblock content %}

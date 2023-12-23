@@ -59,8 +59,7 @@ class Flood(models.Model):
     radius = models.FloatField(null=True, blank=True)
     cause = models.CharField(max_length=100, choices=FLOOD_CAUSES, default='rainfall')
     is_active = models.BooleanField(default=True)
-    def __str__(self):
-        return self.flood_key
+
 
 
 class Glof(models.Model):
@@ -81,8 +80,7 @@ class Glof(models.Model):
     # epicenter = models.PointField(null=True, blank=True)
     radius = models.FloatField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    def __str__(self):
-        return self.glof_key
+
 
 class Landslide(models.Model):
     LANDSLIDE_CAUSES= [
@@ -101,5 +99,3 @@ class Landslide(models.Model):
     # epicenter = models.PointField(null=True, blank=True)
     radius = models.FloatField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    def __str__(self):
-        return self.earthquake_key

@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from . models import Earthquake
-from .utils import plot, bar_plot
-
+from . models import Earthquake, Flood, Glof
+from .utils import plot, bar_plot,plot_pie,flood_plot,glof_plot
+import folium,geocoder
+from folium import plugins
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -59,18 +60,55 @@ def earthquake(request):
     # Plot the bar graph
     bar = bar_plot(x, y)
 
+    # heatmap
+    # data=Earthquake.objects.all()
+    data_list = Earthquake.objects.exclude(latitude_epicenter=None, longitude_epicenter=None).values_list('latitude_epicenter', 'longitude_epicenter', 'richter')
+    map1=folium.Map(location=[28,84],zoom_start=7)
+    # data=[[28,84,3000],[28,91,2000]]
+    plugins.HeatMap(data_list).add_to(map1)
+
+    map1=map1._repr_html_()
+    
     # Rest of the code remains unchanged
-    return render(request, 'earthquake.html', {'chart': chart,'bar':bar})
+    return render(request, 'earthquake.html', {'chart': chart,'bar':bar,'map1':map1},)
 
 
 
 
+from django.db.models import Min
 
 def flood(request):
-    return render(request,'flood.html')
+    # Retrieve data from the database
+    causes_frequency = get_causes_frequency()
+    # Pass data to the pie_chart function in utils.py
+    pie = plot_pie(causes_frequency)
+    min_rainfall_by_year = Flood.objects.values('year').annotate(min_rainfall=Min('rainfall'))
+
+    # Extract years and corresponding minimum rainfall values
+    years = [entry['year'] for entry in min_rainfall_by_year]
+    min_rainfalls = [entry['min_rainfall'] for entry in min_rainfall_by_year]
+    # Plot the data
+    flood_chart = flood_plot(years, min_rainfalls)
+    
+
+    return render(request, 'flood.html', {'pie': pie,'flood_chart':flood_chart})
+
+
+from collections import Counter
+
+def get_causes_frequency():
+    # Retrieve all causes from the database
+    causes = Flood.objects.values_list('cause', flat=True)
+    causes_frequency = Counter(causes)
+    return causes_frequency
+
 
 def glof(request):
-    return render(request,'glof.html')
+    qs=Glof.objects.all()
+    x=[x.water_level for x in qs]
+    y=[y.year for y in qs]
+    chart=glof_plot(y,x) 
+    return render(request,'glof.html',{'chart':chart})
 
 def landslide(request):
     return render(request,'landslide.html')
@@ -80,7 +118,6 @@ def login(request):
 
 def signup(request):
     return render(request,'signup.html')
-
 
 def earthquake_alert(request):
     return render(request,'alertearth.html')
