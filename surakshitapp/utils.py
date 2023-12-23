@@ -22,14 +22,14 @@ def plot(x, y):
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # Set background color
-    fig.set_facecolor('#f6f9ff')
-    ax.set_facecolor('#f6f9ff')
+    fig.set_facecolor('#ffffff')
+    ax.set_facecolor('#ffffff')
 
     # Plot the data
     plt.plot(x, y, marker='o', linestyle='-', color='b', label='Max Richter Scale')
 
     # Add labels and title
-    plt.title("Maximum Richter Scale by Year")
+    # plt.title("Maximum Richter Scale by Year")
     plt.xlabel("Year")
     plt.ylabel("Maximum Richter Scale")
     
@@ -60,14 +60,14 @@ def bar_plot(x, y):
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # Set background color
-    fig.set_facecolor('#f6f9ff')
-    ax.set_facecolor('#f6f9ff')
+    fig.set_facecolor('#ffffff')
+    ax.set_facecolor('#ffffff')
 
     # Plot the bar graph
     plt.bar(x, y, color='b', alpha=0.7, label='Total Casualties')
 
     # Add labels and title
-    plt.title("Total Casualties by Year")
+    # plt.title("Total Casualties by Year")
     plt.xlabel("Year")
     plt.ylabel("Total Casualties")
 
@@ -92,13 +92,13 @@ def bar_plot(x, y):
 
 def plot_pie(data):
     # Set the background color
-    plt.figure(figsize=(8, 4), facecolor='#f6f9ff')  # Set the figure size and facecolor
+    plt.figure(figsize=(10, 4.5), facecolor='#ffffff')  # Set the figure size and facecolor
 
     labels = data.keys()
     values = data.values()
 
-    plt.pie(values,labels=labels,autopct='%1.1f%%')
-    plt.title('Causes of Flood')
+    plt.pie(values,autopct='%1.1f%%')
+    plt.legend(title='Causes', labels=labels, loc='upper right')  # Adds a legend with customer type labels 
     plt.axis('equal')
     graph = get_graph()
 
@@ -107,17 +107,17 @@ def plot_pie(data):
 
 def flood_plot(x, y):
     plt.switch_backend('AGG')
-    fig, ax = plt.subplots(figsize=(9, 5))
+    fig, ax = plt.subplots(figsize=(8, 5))
 
     # Set background color
-    fig.set_facecolor('#f6f9ff')
-    ax.set_facecolor('#f6f9ff')
+    fig.set_facecolor('#ffffff')
+    ax.set_facecolor('#ffffff')
 
     # Plot the data
     plt.plot(x, y, marker='o', linestyle='-', color='b', label='Min Rainfall')
 
     # Add labels and title
-    plt.title("Minimum Rainfall that caused Flood")
+    # plt.title("Minimum Rainfall that caused Flood")
     plt.xlabel("Year")
     plt.ylabel("Minimum Rainfalls")
     
@@ -148,16 +148,16 @@ def glof_plot(x, y):
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # Set background color
-    fig.set_facecolor('#f6f9ff')
-    ax.set_facecolor('#f6f9ff')
+    fig.set_facecolor('#ffffff')
+    ax.set_facecolor('#ffffff')
 
     # Plot the data
     plt.plot(x, y, marker='o', linestyle='-', color='b', label='Max Richter Scale')
 
     # Add labels and title
-    plt.title("Maximum Richter Scale by Year")
+    # plt.title("Maximum Richter Scale by Year")
     plt.xlabel("Year")
-    plt.ylabel("Maximum Richter Scale")
+    plt.ylabel("Minimum Water Level")
     
     # Add grid lines for better readability
     plt.grid(True, linestyle='--', alpha=0.7)

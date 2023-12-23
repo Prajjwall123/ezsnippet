@@ -3,13 +3,33 @@
 {% block content %}
 <main id="main" class="main">
     <section class="section charts">
-        {% if chart %}
-        <img src="data:image/png;base64, {{chart|safe}}">
-        {% endif %}
-        {% if bar %}
-        <img src="data:image/png;base64, {{bar|safe}}">
-        {% endif %}
-        {{map1|safe}}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                        <h5 class="card-title" style="text-align: center;">Maximum Richter Scale by Year</h5>
+                        {% if chart %}
+                        <img src="data:image/png;base64, {{chart|safe}}">
+                        {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                        <h5 class="card-title" style="text-align: center;">Total Casualities by Year</h5>
+                        {% if bar %}
+                            <img src="data:image/png;base64, {{bar|safe}}">
+                        {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                        <h5 class="card-title" style="text-align: center;">Earthquake Prone Areas</h5>
+                        {{map1|safe}}
+                </div>
+            </div>'
+        </div>
+        
+        
+        
     </section>
 </main><!-- End #main -->
 

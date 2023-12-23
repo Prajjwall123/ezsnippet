@@ -89,9 +89,14 @@ def flood(request):
     min_rainfalls = [entry['min_rainfall'] for entry in min_rainfall_by_year]
     # Plot the data
     flood_chart = flood_plot(years, min_rainfalls)
-    
+    data_list = Flood.objects.exclude(latitude_epicenter=None, longitude_epicenter=None).values_list('latitude_epicenter', 'longitude_epicenter', 'casualties')
+    map1=folium.Map(location=[28,84],zoom_start=7)
+    # data=[[28,84,3000],[28,91,2000]]
+    plugins.HeatMap(data_list).add_to(map1)
 
-    return render(request, 'flood.html', {'pie': pie,'flood_chart':flood_chart})
+    map1=map1._repr_html_()
+
+    return render(request, 'flood.html', {'pie': pie,'flood_chart':flood_chart,'map1':map1})
 
 
 from collections import Counter
@@ -108,7 +113,13 @@ def glof(request):
     x=[x.water_level for x in qs]
     y=[y.year for y in qs]
     chart=glof_plot(y,x) 
-    return render(request,'glof.html',{'chart':chart})
+    data_list = Glof.objects.exclude(latitude_epicenter=None, longitude_epicenter=None).values_list('latitude_epicenter', 'longitude_epicenter', 'casualties')
+    map1=folium.Map(location=[28,84],zoom_start=7)
+    # data=[[28,84,3000],[28,91,2000]]
+    plugins.HeatMap(data_list).add_to(map1)
+
+    map1=map1._repr_html_()
+    return render(request,'glof.html',{'chart':chart,'map1':map1})
 
 def landslide(request):
     return render(request,'landslide.html')
