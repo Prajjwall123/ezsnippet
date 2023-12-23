@@ -10,6 +10,6 @@ urlpatterns = [
     path('flood', views.flood,name='flood'),
     path('landslide', views.landslide,name='landslide'),
     path('glof', views.glof,name='glof'),
-    path('login', views.login,name='login'),
+    path('signin', views.signin,name='signin'),
     path('signup', views.signup,name='signup'),
 ]

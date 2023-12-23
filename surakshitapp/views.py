@@ -1,3 +1,6 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 
 from .models import User
@@ -25,7 +28,22 @@ def glof(request):
 def landslide(request):
     return render(request,'landslide.html')
 
-def login(request):
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Authenticate user with custom user model
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # Login the user
+            login(request, user)
+            messages.success(request, 'Login successful!')
+            return redirect('dashboard')  # Replace 'dashboard' with the URL name of your dashboard page
+        else:
+            messages.error(request, 'Invalid login credentials. Please try again.')
+
     return render(request, 'login.html')
 
 def signup(request):
