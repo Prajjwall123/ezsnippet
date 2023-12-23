@@ -117,10 +117,10 @@ def calculate_users_form(request):
         # Extract user emails from the list of dictionaries
         user_emails = [user['user_email'] for user in users_within_radius]
         print(user_emails)
-        
+
         # Example subject and message (modify as needed)
         subject = 'Flood Alert'
-        message = 'There is a flood alert in your area. Please take necessary precautions.'
+        message = 'There is a flood alert in your area. Please take open the surakshit app and take necessary precautions.'
 
         # Send email
         send_mail(subject, message, settings.EMAIL_HOST_USER, user_emails)
