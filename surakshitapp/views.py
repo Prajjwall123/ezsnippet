@@ -1,9 +1,13 @@
+import folium
+import geocoder
 from django.http import JsonResponse
 from django.shortcuts import render
-from . models import Earthquake, Flood, Glof
-from .utils import plot, bar_plot,plot_pie,flood_plot,glof_plot
-import folium,geocoder
 from folium import plugins
+
+from .models import Earthquake, Flood, Glof
+from .utils import bar_plot, flood_plot, glof_plot, plot, plot_pie
+
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -77,6 +81,7 @@ def earthquake(request):
 
 from django.db.models import Min
 
+
 def flood(request):
     # Retrieve data from the database
     causes_frequency = get_causes_frequency()
@@ -95,6 +100,7 @@ def flood(request):
 
 
 from collections import Counter
+
 
 def get_causes_frequency():
     # Retrieve all causes from the database
@@ -118,9 +124,19 @@ def login(request):
 
 def signup(request):
     return render(request,'signup.html')
+from django.http import JsonResponse
+from django.shortcuts import render
+
+from .models import Earthquake
+
 
 def earthquake_alert(request):
-    return render(request,'alertearth.html')
+    all_quakes = Earthquake.objects.all
+
+    return render(request, 'alertearth.html', {'quakes': all_quakes})
+
+
+
 
 def flood_alert(request):
     return render(request,'alertflood.html')
@@ -131,6 +147,15 @@ def glof_alert(request):
 def landslide_alert(request):
     return render(request,'alertland.html')
 
+
+def get_model_data(request):
+    # Fetch data from your model, for example:
+    model_data = Earthquake.objects.all().values()  # Fetch all data from the model
+
+    # Convert model data to a list of dictionaries
+    data_list = list(model_data)
+
+    return JsonResponse(data_list, safe=False)
 
 
 

@@ -1,1 +1,44 @@
 {% extends "index.html" %}
+
+{% block content %}
+<main id="main" class="main">
+    <section class="section charts">
+        <h1>Epicenter Map</h1>
+        <div id="epicenterMap" class="map"></div>
+
+        <h1>Safe Points Map</h1>
+        <div id="safePointsMap" class="map"></div>
+
+        <script>
+            var epicenterMap = L.map('epicenterMap').setView([28.3949, 84.1240], 5); // Initialize epicenter map with center and zoom level
+            var safePointsMap = L.map('safePointsMap').setView([28.3949, 84.1240], 5); // Initialize safe points map with center and zoom level
+
+            // Add OpenStreetMap tiles to both maps
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(epicenterMap);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(safePointsMap);
+
+            // Get earthquake data from Django view
+            var epicenter = {{ quakes.latitude_epicenter|safe }};
+            var safePoints = [
+                [{{ quakes.latitude_safepoint_1|safe }}, {{ quakes.longitude_safepoint_1|safe }}],
+                [{{ quakes.latitude_safepoint_2|safe }}, {{ quakes.longitude_safepoint_2|safe }}],
+                [{{ quakes.latitude_safepoint_3|safe }}, {{ quakes.longitude_safepoint_3|safe }}],
+                [{{ quakes.latitude_safepoint_4|safe }}, {{ quakes.longitude_safepoint_4|safe }}],
+                [{{ quakes.latitude_safepoint_5|safe }}, {{ quakes.longitude_safepoint_5|safe }}],
+            ];
+
+            // Add marker for the epicenter
+            L.marker([epicenter.latitude_epicenter, epicenter.longitude_epicenter]).addTo(epicenterMap);
+
+            // Add markers for safe points
+            for (var i = 0; i < safePoints.length; i++) {
+                var marker = L.marker(safePoints[i]).addTo(safePointsMap);
+            }
+        </script>
+    </section>
+</main><!-- End #main -->
+{% endblock content %}
