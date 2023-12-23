@@ -9,4 +9,3 @@ admin.site.register(Earthquake)
 admin.site.register(Flood)
 admin.site.register(Landslide)
 admin.site.register(Glof)
-

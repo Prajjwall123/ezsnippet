@@ -30,6 +30,12 @@
         
         
         
+        {% if chart %}
+        <img src="data:image/png;base64, {{chart|safe}}">
+        {% endif %}
+        {% if bar %}
+        <img src="data:image/png;base64, {{bar|safe}}">
+        {% endif %}
     </section>
 </main><!-- End #main -->
 

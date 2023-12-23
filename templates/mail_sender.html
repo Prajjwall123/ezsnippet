@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Mail</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <button id="myButton">Call Function</button>
+
+<script>
+    $(document).ready(function () {
+        $('#myButton').on('click', function () {
+            $.ajax({
+                type: 'GET',
+                url: 'calculate_users_form/',  // Replace with the actual URL
+                success: function (data) {
+                    alert("sent mail to all users in all disaster zones");
+                },
+                error: function () {
+                    alert('Error calling the function.');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

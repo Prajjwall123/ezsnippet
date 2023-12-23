@@ -1,1 +1,51 @@
-{% extends "index.html" %}
+{% extends "index.html" %} {% block content %}
+<main id="main" class="main">
+  <section class="section charts">
+    <style>
+      /* Adjust the width and height as needed */
+      .map-container {
+        display: flex;
+      }
+
+      .map {
+        height: 600px;
+        width: 50%;
+        margin: 10px;
+      }
+    </style>
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+
+    <div class="map-container">
+        <label for="location" class="form-label style="margin-top:90px"">Danger</label>
+      <div id="map1" class="map" style="margin-top:90px"></div>
+      <label for="location" class="form-label">Safe</label>
+      <div id="map2" class="map" style="margin-left:100px; margin-top:90px"></div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      function initMaps() {
+        // Map 1
+        var map1 = L.map("map1").setView([28.3949, 84.1240], 8); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+          map1
+        );
+
+        // Map 2
+        var map2 = L.map("map2").setView([28.3949, 84.1240], 8); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+          map2
+        );
+      }
+      document.addEventListener("DOMContentLoaded", initMaps);
+    </script>
+  </section>
+</main>
+<!-- End #main -->
+
+{% endblock content %}

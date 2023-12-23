@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <head>
   <meta charset="utf-8">
@@ -29,6 +30,10 @@
 
   <!-- Template Main CSS File -->
   <link href="static/css/style.css" rel="stylesheet">
+  
+  <!-- leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </head>
 
@@ -58,49 +63,56 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form action="/signup" method="post" id="signup" class="row g-3 needs-validation" novalidate>
+                    {% csrf_token %}
                     <div class="col-12">
-                      <label for="yourName" class="form-label">Your Name</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required>
-                      <div class="invalid-feedback">Please, enter your name!</div>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
+                        <div class="invalid-feedback">Please, enter your name!</div>
+                    </div>
+                
+                    <div class="col-12">
+                        <label for="phone_number" class="form-label">Your Phone Number</label>
+                        <input type="tel" name="phone_number" class="form-control" id="phone_number" required>
+                        <div class="invalid-feedback">Please enter a valid phone number!</div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourEmail" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
-                    </div>
-
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" name="email" class="form-control" id="email" required>
+                      <div class="invalid-feedback">Please enter a valid email address!</div>
+                  </div>
+                
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please choose a username.</div>
-                      </div>
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="text" name="username" class="form-control" id="username" required>
+                            <div class="invalid-feedback">Please choose a username.</div>
+                        </div>
                     </div>
-
+                
+                    <!-- Hidden fields to store latitude and longitude -->
+                    <input type="hidden" name="latitude" id="latitude" value="">
+                    <input type="hidden" name="longitude" id="longitude" value="">
+                
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
-                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
-                        <div class="invalid-feedback">You must agree before submitting.</div>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" required>
+                        <br>
+                        <label for="location" class="form-label">Location</label>
+                
+                        <div id="map" style="height: 300px;"></div>
+                        <div class="invalid-feedback">Please enter your password!</div>
                     </div>
                     <div class="col-12">
-                      <p class="small mb-0">Already have an account? <a href="/login">Log in</a></p>
+                        <button class="btn btn-primary w-100" type="submit">Create Account</button>
                     </div>
-                  </form>
-
+                    <div class="col-12">
+                        <p class="small mb-0">Already have an account? <a href="/login">Log in</a></p>
+                    </div>
+                </form>
+                
                 </div>
               </div>
 
@@ -111,6 +123,10 @@
             </div>
           </div>
         </div>
+        <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
 
       </section>
 
@@ -130,6 +146,38 @@
 
   <!-- Template Main JS File -->
   <script src="static/js/main.js"></script>
+
+   <!-- Script for Leaflet map -->
+   <script>
+    // Initialize the Leaflet map
+    var map = L.map('map').setView([27.7172, 85.3240], 7);
+
+    // Add the OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Initialize marker without setting a specific location
+    var marker = L.marker([0, 0], { draggable: true }).addTo(map);
+
+    // Listen for the map click event to set the marker location
+    map.on('click', function (event) {
+        var clickedLatLng = event.latlng;
+        marker.setLatLng(clickedLatLng);
+        updateMarkerPosition(clickedLatLng);
+    });
+
+    // Listen for the marker drag event to update latitude and longitude
+    marker.on('dragend', function (event) {
+        var position = marker.getLatLng();
+        updateMarkerPosition(position);
+    });
+
+    function updateMarkerPosition(position) {
+        document.getElementById('latitude').value = position.lat;
+        document.getElementById('longitude').value = position.lng;
+    }
+</script>
 
 </body>
 
