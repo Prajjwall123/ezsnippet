@@ -30,16 +30,16 @@ def login(request):
 
 def signup(request):
     if request.method == 'POST':
+        name=request.POST['name']
         username = request.POST['username']
         password = request.POST['password']
-        name = request.POST['name']
+        phone_number=request.POST['phone_number']
         latitude = request.POST['latitude']
         longitude = request.POST['longitude']
-        phone_number = request.POST['phone_number']  # Change from 'email' to 'phone_number'
-        
-        print(username, password, name, latitude, longitude, phone_number)
+        email = request.POST['email']
+        print(username, password, phone_number, latitude, longitude, email, name)
 
-        myuser = User.objects.create_user(phone_number=phone_number, password=password, name=name, latitude=latitude, longitude=longitude)
+        myuser = User.objects.create_user(email=email, password=password, phone_number=phone_number, latitude=latitude, longitude=longitude, name=name)
 
         return redirect('login')
 
