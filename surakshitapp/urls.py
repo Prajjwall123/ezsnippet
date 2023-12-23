@@ -12,6 +12,7 @@ urlpatterns = [
     path('glof', views.glof,name='glof'),
     path('signin', views.signin,name='signin'),
     path('signup', views.signup,name='signup'),
-    path('calculate_users_form/', views.calculate_users_form, name='calculate_users_form'),  # Add this line
+    path('calculate_users_form/', views.calculate_users_form, name='calculate_users_form'),
+    path('mail_sender',views.mail_sender,name='mail_sender'),
 
 ]

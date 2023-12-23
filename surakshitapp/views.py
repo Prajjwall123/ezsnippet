@@ -5,6 +5,7 @@ from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+
 from surakshit import settings
 
 from . import models
@@ -127,3 +128,6 @@ def calculate_users_form(request):
 
     # Return the response as JSON
     return JsonResponse(response_data)
+
+def mail_sender(request):
+    return render(request, 'mail_sender.html')
