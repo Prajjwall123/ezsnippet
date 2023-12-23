@@ -38,8 +38,6 @@ class Earthquake(models.Model):
     # epicenter = models.PointField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.earthquake_key
 
 class Flood(models.Model):
     FLOOD_CAUSES = [
