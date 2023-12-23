@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from surakshit import settings
 
 from . import models
 from .models import Earthquake, Flood, Glof, Landslide, User
@@ -111,6 +113,17 @@ def calculate_users_form(request):
 
         # Append the information to the response
         response_data['active_floods'].append(users_info)
+
+        # Extract user emails from the list of dictionaries
+        user_emails = [user['user_email'] for user in users_within_radius]
+        print(user_emails)
+        
+        # Example subject and message (modify as needed)
+        subject = 'Flood Alert'
+        message = 'There is a flood alert in your area. Please take necessary precautions.'
+
+        # Send email
+        send_mail(subject, message, settings.EMAIL_HOST_USER, user_emails)
 
     # Return the response as JSON
     return JsonResponse(response_data)
