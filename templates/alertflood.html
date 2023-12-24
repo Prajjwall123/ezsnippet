@@ -1,1 +1,117 @@
 {% extends "index.html" %}
+{% block content %}
+<main id="main" class="main">
+  <section class="section charts">
+    <style>
+      /* Adjust the width and height as needed */
+      .map-container {
+        display: flex;
+      }
+
+      .map {
+        height: 300px;
+        margin: 10px;
+      }
+    </style>
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <h5 class="card-title" style="text-align: center;">Red Zone for Alert 1</h5>
+                    <div id="map1" class="map"></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <h5 class="card-title" style="text-align: center;">Safe Point for Alert 1</h5>
+                    <div id="map2" class="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <h5 class="card-title" style="text-align: center;">Red Zone for Alert 2</h5>
+                    <div id="map3" class="map"></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <h5 class="card-title" style="text-align: center;">Safe Point for Alert 2</h5>
+                    <div id="map4" class="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% comment %} <div class="map-container">
+      <label for="location" class="form-label style="margin-top:90px"">Danger</label>
+      {% comment %} <div id="map1" class="map" style="margin-top:90px"></div> {% endcomment %}
+      {% comment %} <label for="location" class="form-label">Safe</label>
+      <div id="map2" class="map" style="margin-left:100px; margin-top:90px"></div>
+    </div>
+
+    <div class="map-container">
+        <label for="location" class="form-label style="margin-top:90px"">Danger</label>
+        <div id="map3" class="map" style="margin-top:90px"></div>
+        <label for="location" class="form-label">Safe</label>
+        <div id="map4" class="map" style="margin-left:100px; margin-top:90px"></div>
+      </div> {% endcomment %} 
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      function initMaps() {
+        // Map 1
+        var map1 = L.map("map1").setView([26.736058, 87.088447], 9); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map1);
+        var circle = L.circle([26.736058, 87.088447], {
+            radius: 8000, 
+            color: 'red', 
+            fillColor: '#f03', 
+            fillOpacity: 0.5 
+        }).addTo(map1);
+
+        
+        
+        // Map 2
+        var map2 = L.map("map2").setView([26.736058, 87.088447], 10); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map2);
+        L.marker([26.786203, 87.337471]).addTo(map2);
+        L.marker([26.626850, 87.235427]).addTo(map2);
+        L.marker([26.552553, 86.744835]).addTo(map2);
+        L.marker([26.501820, 87.275311]).addTo(map2);
+        
+        
+
+        var map3 = L.map("map3").setView([27.695209, 83.461026], 8); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map3);
+        var circle = L.circle([27.695209, 83.461026], {
+            radius: 13000, 
+            color: 'red', 
+            fillColor: '#f03', 
+            fillOpacity: 0.5 
+        }).addTo(map3);
+
+        // Map 2
+        var map4 = L.map("map4").setView([27.695209, 83.461026], 10); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map4);
+        L.marker([27.607401, 83.610092]).addTo(map4);
+        L.marker([27.542885, 83.394342]).addTo(map4);
+        L.marker([27.715655, 83.322883]).addTo(map4);
+
+
+        
+      }
+      document.addEventListener("DOMContentLoaded", initMaps);
+    </script>
+  </section>
+</main>
+<!-- End #main -->
+{% endblock content %}

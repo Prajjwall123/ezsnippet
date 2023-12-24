@@ -1,8 +1,13 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.mail import EmailMessage, send_mail
+from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
-from . models import Earthquake, Flood, Glof
+from django.shortcuts import redirect, render
+from . models import Earthquake, Flood, Glof, User
 from .utils import plot, bar_plot,plot_pie,flood_plot,glof_plot
-import folium,geocoder
+import folium
 from folium import plugins
 # Create your views here.
 def index(request):
@@ -124,11 +129,41 @@ def glof(request):
 def landslide(request):
     return render(request,'landslide.html')
 
-def login(request):
-    return render(request, 'login.html')
+
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Authenticate user with custom user model
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # Login the user
+            login(request, user)
+            messages.success(request, 'Login successful!')
+            return redirect('dashboard')  
+        else:
+            messages.error(request, 'Invalid login credentials. Please try again.')
+
+    return render(request, 'signin.html')
 
 def signup(request):
-    return render(request,'signup.html')
+    if request.method == 'POST':
+        name=request.POST['name']
+        username = request.POST['username']
+        password = request.POST['password']
+        phone_number=request.POST['phone_number']
+        latitude = request.POST['latitude']
+        longitude = request.POST['longitude']
+        email = request.POST['email']
+        print(username, password, phone_number, latitude, longitude, email, name)
+
+        myuser = User.objects.create_user(email=email, password=password, phone_number=phone_number, latitude=latitude, longitude=longitude, name=name)
+
+        return redirect('signin')
+
+    return render(request, 'signup.html')
 
 def earthquake_alert(request):
     return render(request,'alertearth.html')
@@ -141,8 +176,3 @@ def glof_alert(request):
 
 def landslide_alert(request):
     return render(request,'alertland.html')
-
-
-
-
-

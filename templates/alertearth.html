@@ -1,1 +1,106 @@
 {% extends "index.html" %}
+{% block content %}
+<main id="main" class="main">
+  <section class="section charts">
+    <style>
+      /* Adjust the width and height as needed */
+      .map-container {
+        display: flex;
+      }
+
+      .map {
+        height: 300px;
+        margin: 10px;
+      }
+    </style>
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+
+    
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-6">
+              <div class="card">
+                  <h5 class="card-title" style="text-align: center;">Red Zone for Alert 1</h5>
+                  <div id="map1" class="map"></div>
+              </div>
+          </div>
+          <div class="col-lg-6">
+              <div class="card">
+                  <h5 class="card-title" style="text-align: center;">Safe Point for Alert 1</h5>
+                  <div id="map2" class="map"></div>
+              </div>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-lg-6">
+              <div class="card">
+                  <h5 class="card-title" style="text-align: center;">Red Zone for Alert 2</h5>
+                  <div id="map3" class="map"></div>
+              </div>
+          </div>
+          <div class="col-lg-6">
+              <div class="card">
+                  <h5 class="card-title" style="text-align: center;">Safe Point for Alert 2</h5>
+                  <div id="map4" class="map"></div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      function initMaps() {
+        // Map 1
+        var map1 = L.map("map1").setView([28.3949, 84.1240], 8); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map1);
+        var circle = L.circle([27.98566, 84.633447], {
+            radius: 20000, 
+            color: 'red', 
+            fillColor: '#f03', 
+            fillOpacity: 0.5 
+        }).addTo(map1);
+
+        
+        
+        // Map 2
+        var map2 = L.map("map2").setView([27.970274, 84.593423], 10); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map2);
+        L.marker([27.980093, 84.588785]).addTo(map2);
+        L.marker([27.964780, 84.593423]).addTo(map2);
+        L.marker([27.996954, 84.638254]).addTo(map2);
+        L.marker([27.970274, 84.522820]).addTo(map2);
+        L.marker([28.011201, 84.553740]).addTo(map2);
+        
+
+        var map3 = L.map("map3").setView([28.5949, 82.1240], 8); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map3);
+        var circle = L.circle([28.86515, 82.171364], {
+            radius: 20000, 
+            color: 'red', 
+            fillColor: '#f03', 
+            fillOpacity: 0.5 
+        }).addTo(map3);
+
+        // Map 2
+        var map4 = L.map("map4").setView([28.793268, 81.846890], 13); // Adjust lat/lng and zoom as needed
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map4);
+        L.marker([28.797578, 81.851150]).addTo(map4);
+        L.marker([28.777804, 81.847289]).addTo(map4);
+        L.marker([28.781565, 81.823241]).addTo(map4);
+        L.marker([28.793268, 81.851754]).addTo(map4);
+        L.marker([28.811201, 81.846890]).addTo(map4);
+
+        
+      }
+      document.addEventListener("DOMContentLoaded", initMaps);
+    </script>
+  </section>
+</main>
+<!-- End #main -->
+{% endblock content %}
