@@ -145,7 +145,7 @@ def flood_plot(x, y):
 
 def glof_plot(x, y):
     plt.switch_backend('AGG')
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(9, 4))
 
     # Set background color
     fig.set_facecolor('#ffffff')
